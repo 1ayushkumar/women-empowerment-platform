@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Storage</title>
+</head>
+<body>
+    <h1>Clearing Browser Storage...</h1>
+    <script>
+        // Clear all storage
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Clear cookies
+        document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+        
+        console.log('✅ All storage cleared');
+        document.body.innerHTML = '<h1>✅ Storage Cleared Successfully!</h1><p>You can close this tab and refresh your main application.</p>';
+    </script>
+</body>
+</html>

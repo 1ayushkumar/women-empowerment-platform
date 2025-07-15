@@ -1,0 +1,104 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.8s ease-out forwards;
+}
+
+.scale-up {
+  animation: scaleUp 0.8s ease-out forwards;
+}
+
+.bounce {
+  animation: bounce 2s infinite;
+}
+
+.stagger-animation > * {
+  opacity: 0;
+}
+
+.stagger-animation > *:nth-child(1) { animation: fadeIn 0.5s ease-out 0.1s forwards; }
+.stagger-animation > *:nth-child(2) { animation: fadeIn 0.5s ease-out 0.2s forwards; }
+.stagger-animation > *:nth-child(3) { animation: fadeIn 0.5s ease-out 0.3s forwards; }
+.stagger-animation > *:nth-child(4) { animation: fadeIn 0.5s ease-out 0.4s forwards; }
+.stagger-animation > *:nth-child(5) { animation: fadeIn 0.5s ease-out 0.5s forwards; }
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+}
+
+.progress-bar {
+  width: 0;
+  transition: width 1s ease-in-out;
+}
+
+.progress-bar.animate {
+  width: 100%;
+}
