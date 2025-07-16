@@ -21,6 +21,47 @@ const useFinanceStore = create((set, get) => ({
     set({ isLoading: true, error: null });
 
     try {
+      // Check if we're in demo mode
+      const token = localStorage.getItem('token');
+      if (token && (token.startsWith('demo-') || token === 'offline-demo-token' || token === 'demo-access-token')) {
+        // Return demo data
+        const demoTransactions = [
+          {
+            id: 1,
+            description: 'Salary',
+            amount: 50000,
+            type: 'income',
+            category: 'Salary',
+            date: new Date().toISOString(),
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: 2,
+            description: 'Groceries',
+            amount: -3500,
+            type: 'expense',
+            category: 'Food',
+            date: new Date(Date.now() - 86400000).toISOString(),
+            createdAt: new Date(Date.now() - 86400000).toISOString()
+          },
+          {
+            id: 3,
+            description: 'Rent',
+            amount: -15000,
+            type: 'expense',
+            category: 'Housing',
+            date: new Date(Date.now() - 172800000).toISOString(),
+            createdAt: new Date(Date.now() - 172800000).toISOString()
+          }
+        ];
+
+        set({
+          transactions: demoTransactions,
+          isLoading: false
+        });
+        return { transactions: demoTransactions };
+      }
+
       const response = await financeAPI.getTransactions(params);
       set({
         transactions: response.data.transactions,
@@ -127,6 +168,38 @@ const useFinanceStore = create((set, get) => ({
     set({ isLoading: true, error: null });
 
     try {
+      // Check if we're in demo mode
+      const token = localStorage.getItem('token');
+      if (token && (token.startsWith('demo-') || token === 'offline-demo-token' || token === 'demo-access-token')) {
+        // Return demo savings goals
+        const demoGoals = [
+          {
+            id: 1,
+            name: 'Emergency Fund',
+            targetAmount: 50000,
+            currentAmount: 15000,
+            deadline: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString(),
+            description: 'Building an emergency fund for unexpected expenses',
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: 2,
+            name: 'Vacation Fund',
+            targetAmount: 50000,
+            currentAmount: 10000,
+            deadline: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+            description: 'Saving for a dream vacation',
+            createdAt: new Date().toISOString()
+          }
+        ];
+
+        set({
+          savingsGoals: demoGoals,
+          isLoading: false
+        });
+        return demoGoals;
+      }
+
       const response = await financeAPI.getGoals();
       set({
         savingsGoals: response.data.goals,
@@ -260,6 +333,40 @@ const useFinanceStore = create((set, get) => ({
   // Fetch financial summary
   fetchSummary: async (params = {}) => {
     try {
+      // Check if we're in demo mode
+      const token = localStorage.getItem('token');
+      if (token && (token.startsWith('demo-') || token === 'offline-demo-token' || token === 'demo-access-token')) {
+        // Return demo summary data
+        const demoSummary = {
+          balance: {
+            income: 50000,
+            expense: 18500,
+            balance: 31500
+          },
+          monthlySummary: {
+            currentMonth: {
+              income: 50000,
+              expense: 18500,
+              balance: 31500
+            },
+            previousMonth: {
+              income: 48000,
+              expense: 20000,
+              balance: 28000
+            }
+          },
+          goalsSummary: {
+            totalGoals: 2,
+            totalTarget: 100000,
+            totalSaved: 25000,
+            completedGoals: 0
+          }
+        };
+
+        set({ summary: demoSummary });
+        return demoSummary;
+      }
+
       const response = await financeAPI.getSummary(params);
       set({
         summary: response.data
