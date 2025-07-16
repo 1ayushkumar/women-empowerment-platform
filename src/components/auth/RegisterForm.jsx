@@ -62,11 +62,30 @@ function RegisterForm() {
     setIsLoading(true);
 
     try {
-      const result = await offlineLogin('demo@example.com', 'demo123');
-      toast.success('Welcome to the Demo! Explore all features.');
+      // Create demo user directly
+      const demoUser = {
+        id: 'demo-user-123',
+        name: 'Demo User',
+        email: 'demo@womensempowerment.com',
+        membershipPlan: 'premium',
+        profile: {
+          fullName: 'Demo User'
+        }
+      };
+
+      // Save to localStorage
+      localStorage.setItem('user', JSON.stringify(demoUser));
+      localStorage.setItem('token', 'demo-access-token');
+
+      // Update auth store directly
+      const authStore = useAuthStore.getState();
+      authStore.login(demoUser, 'demo-access-token');
+
+      toast.success('🎉 Welcome to the Demo! Explore all features freely.');
       navigate('/home');
     } catch (error) {
-      toast.error('Demo login failed. Please try again.');
+      console.error('Demo access error:', error);
+      toast.error('Demo access failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

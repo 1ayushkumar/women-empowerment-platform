@@ -16,15 +16,61 @@ const useAuthStore = create(
       login: async (userData, token) => {
         // Save to localStorage
         localStorage.setItem('user', JSON.stringify(userData));
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', token || 'offline-token');
 
         set({
           user: userData,
-          token,
+          token: token || 'offline-token',
           isAuthenticated: true,
           membershipPlan: userData.membershipPlan || 'free',
           error: null
         });
+      },
+
+      // Offline login for demo purposes
+      offlineLogin: (email, password) => {
+        const demoUser = {
+          id: 1,
+          name: 'Demo User',
+          email: email,
+          membershipPlan: 'premium'
+        };
+
+        localStorage.setItem('user', JSON.stringify(demoUser));
+        localStorage.setItem('token', 'offline-demo-token');
+
+        set({
+          user: demoUser,
+          token: 'offline-demo-token',
+          isAuthenticated: true,
+          membershipPlan: 'premium',
+          error: null
+        });
+
+        return Promise.resolve({ user: demoUser, token: 'offline-demo-token' });
+      },
+
+      // Offline register for demo purposes
+      offlineRegister: (userData) => {
+        const newUser = {
+          id: Date.now(),
+          name: userData.name,
+          email: userData.email,
+          membershipPlan: 'free'
+        };
+
+        localStorage.setItem('user', JSON.stringify(newUser));
+        localStorage.setItem('token', 'offline-demo-token');
+
+        set({
+          user: newUser,
+          token: 'offline-demo-token',
+          isAuthenticated: true,
+          membershipPlan: 'free',
+          error: null
+        });
+
+        return Promise.resolve({ user: newUser, token: 'offline-demo-token' });
       },
 
       logout: async () => {
@@ -72,7 +118,21 @@ const useAuthStore = create(
 
         if (token && user) {
           try {
-            // Check if token is expired
+            // Handle demo tokens (simple strings) vs JWT tokens
+            if (token.startsWith('demo-') || token === 'offline-demo-token' || token === 'demo-access-token') {
+              // Demo token - always valid
+              const parsedUser = JSON.parse(user);
+              set({
+                user: parsedUser,
+                token,
+                isAuthenticated: true,
+                membershipPlan: parsedUser.membershipPlan || 'free',
+                error: null
+              });
+              return;
+            }
+
+            // Check if JWT token is expired
             const tokenPayload = JSON.parse(atob(token.split('.')[1]));
             const currentTime = Date.now() / 1000;
 

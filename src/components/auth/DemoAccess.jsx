@@ -17,7 +17,10 @@ function DemoAccess() {
         id: 'demo-user-123',
         name: 'Demo User',
         email: 'demo@womensempowerment.com',
-        membershipPlan: 'premium'
+        membershipPlan: 'premium',
+        profile: {
+          fullName: 'Demo User'
+        }
       };
       
       // Save to localStorage
