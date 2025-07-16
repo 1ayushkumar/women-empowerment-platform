@@ -1,13 +1,31 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import useAuthStore from '../store/authStore';
+import toast from 'react-hot-toast';
 
 function Hero() {
   const navigate = useNavigate();
   const [showLearnMore, setShowLearnMore] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const offlineLogin = useAuthStore((state) => state.offlineLogin);
 
   const handleGetStarted = () => {
     navigate('/login');
+  };
+
+  const handleDemoAccess = async () => {
+    setIsLoading(true);
+
+    try {
+      const result = await offlineLogin('demo@example.com', 'demo123');
+      toast.success('Welcome to the Demo! Explore all features.');
+      navigate('/home');
+    } catch (error) {
+      toast.error('Demo access failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -29,19 +47,38 @@ function Hero() {
           >
             Join our platform to access education, opportunities, and support for your journey
           </motion.p>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="space-x-4"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <button 
+            <button
               onClick={handleGetStarted}
               className="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-purple-100 transition-colors"
             >
               Get Started
             </button>
-            <button 
+            <button
+              onClick={handleDemoAccess}
+              disabled={isLoading}
+              className="bg-green-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            >
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Loading Demo...
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Try Demo
+                </>
+              )}
+            </button>
+            <button
               onClick={() => setShowLearnMore(true)}
               className="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition-colors"
             >

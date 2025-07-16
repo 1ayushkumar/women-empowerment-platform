@@ -13,6 +13,7 @@ const loginSchema = Yup.object().shape({
 
 function LoginForm() {
   const login = useAuthStore((state) => state.login);
+  const offlineLogin = useAuthStore((state) => state.offlineLogin);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,6 +21,7 @@ function LoginForm() {
     setIsLoading(true);
 
     try {
+      // Try online authentication first
       const response = await authAPI.login({
         email: values.email,
         password: values.password
@@ -32,8 +34,30 @@ function LoginForm() {
         navigate('/home');
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Login failed';
-      toast.error(errorMessage);
+      // If online authentication fails, use offline mode
+      console.log('Online authentication failed, using offline mode');
+
+      try {
+        const result = await offlineLogin(values.email, values.password);
+        toast.success(`Welcome back! (Demo Mode)`);
+        navigate('/home');
+      } catch (offlineError) {
+        toast.error('Login failed. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setIsLoading(true);
+
+    try {
+      const result = await offlineLogin('demo@example.com', 'demo123');
+      toast.success('Welcome to the Demo! Explore all features.');
+      navigate('/home');
+    } catch (error) {
+      toast.error('Demo login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +116,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed mb-3"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
@@ -104,6 +128,37 @@ function LoginForm() {
               )}
             </button>
           </Form>
+
+          {/* Demo Login Button */}
+          <div className="mt-4 text-center">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or try the demo</span>
+              </div>
+            </div>
+            <button
+              onClick={handleDemoLogin}
+              disabled={isLoading}
+              className="mt-3 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Loading Demo...
+                </div>
+              ) : (
+                <>
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Try Demo (No Registration Required)
+                </>
+              )}
+            </button>
+          </div>
         )}
       </Formik>
     </div>
