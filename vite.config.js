@@ -8,6 +8,14 @@ export default defineConfig({
     port: 5174,
     host: true
   },
+  preview: {
+    host: true,
+    port: 4173,
+    allowedHosts: [
+      'women-empowerment-platform.onrender.com',
+      '.onrender.com'
+    ]
+  },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
