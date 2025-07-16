@@ -1,6 +1,7 @@
 import { useState  } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import DemoAccess from './DemoAccess';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -162,6 +163,11 @@ const Auth = () => {
           </button>
         </div>
       </motion.div>
+
+      {/* Demo Access Component */}
+      <div className="mt-8">
+        <DemoAccess />
+      </div>
     </div>
   );
 };
