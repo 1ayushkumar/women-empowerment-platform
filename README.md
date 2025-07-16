@@ -1,6 +1,24 @@
 # 🌟 Women's Empowerment Platform
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Available-brightgreen?style=for-the-badge&logo=render)](https://women-empowerment-platform.onrender.com)
+[![GitHub release](https://img.shields.io/github/release/1ayushkumar/women-empowerment-platform.svg?style=for-the-badge)](https://github.com/1ayushkumar/women-empowerment-platform/releases)
+[![GitHub stars](https://img.shields.io/github/stars/1ayushkumar/women-empowerment-platform.svg?style=for-the-badge)](https://github.com/1ayushkumar/women-empowerment-platform/stargazers)
+
 A comprehensive digital platform designed to empower women through education, entrepreneurship, employment opportunities, health resources, safety tools, and financial guidance.
+
+## 🌐 Live Demo
+
+**🔗 [View Live Application](https://women-empowerment-platform.onrender.com)**
+
+Experience the full Women's Empowerment Platform with all features including:
+- 📚 Interactive course catalog and mentorship programs
+- 💼 Business plan generator and marketplace
+- 💰 Job portal and career guidance tools
+- 🏥 Health trackers and wellness resources
+- 🛡️ Safety center with emergency contacts
+- 💳 Comprehensive finance management tools
+
+---
 
 ![Platform Preview](https://img.shields.io/badge/Status-Active-brightgreen)
 ![React](https://img.shields.io/badge/React-18.x-blue)
